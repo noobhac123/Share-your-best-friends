@@ -347,6 +347,7 @@
     </div>
 
     <script>
+        // --- START OF MODIFIED SCRIPT ---
         const receivedMessageDisplay = document.getElementById('receivedMessageDisplay');
         const personalizedMessageElement = document.getElementById('personalizedMessage');
         
@@ -371,94 +372,89 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            console.log('DOMContentLoaded: Page loaded.'); // DEBUG
             const toName = getUrlParameter('to');
             const fromName = getUrlParameter('from');
 
             if (toName && fromName) {
+                console.log('DOMContentLoaded: Found URL parameters - to:', toName, 'from:', fromName); // DEBUG
                 personalizedMessageElement.innerHTML = `Hey <strong>${toName}</strong>, mere yaar! <br><br> Kya haal chaal? Main, tumhara dost <strong>${fromName}</strong>, tumhe bahut miss kar raha/rahi hoon! Woh apni purani baatein, hasi-thahake, aur saari masti... sab kuch itna yaad aata hai na! Socha, ek chhota sa message bhej kar tumhe yaad dila doon ki tum kitne special ho. <br><br>Stay awesome, aur jaldi milte hain! Loads of love! 🤗`;
                 receivedMessageDisplay.style.display = 'block';
                 receivedMessageDisplay.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        });
-
-        shareButton.addEventListener('click', async () => {
-            const senderName = senderNameInput.value.trim();
-            const friendName = friendNameInput.value.trim();
-
-            if (!senderName || !friendName) {
-                alert('Arre yaar! Apna aur apne dost ka naam toh likh do, tabhi toh message banega! 😉');
-                return;
-            }
-
-            const baseUrl = window.location.origin + window.location.pathname;
-            const shareUrl = `${baseUrl}?to=${encodeURIComponent(friendName)}&from=${encodeURIComponent(senderName)}`;
-            const shareText = `👋 Hey ${friendName}! Tumhare liye ${senderName} ki taraf se ek surprise message hai! 🎁 Jaldi se link open karke dekho kya hai:`;
-            const fullShareTextForClipboard = `${shareText}\n${shareUrl}`;
-
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: `💖 ${senderName} ka khaas paigaam ${friendName} ke liye! 💖`,
-                        text: shareText,
-                        url: shareUrl
-                    });
-                    // Optional: Hide fallback options if they were visible from a previous attempt
-                    fallbackShareOptionsDiv.style.display = 'none';
-                } catch (error) {
-                    console.error('Error sharing:', error);
-                    if (error.name !== 'AbortError') {
-                        // If navigator.share exists but fails for some other reason, show fallback
-                        showFallbackOptions(shareText, shareUrl, fullShareTextForClipboard, 'Oops! Link share nahi ho paya. Shayad tumne cancel kar diya ya koi error aa gaya. 🙁 Neeche diye gaye options try karo.');
-                    } else {
-                         // User aborted the share. Optionally hide fallback or do nothing.
-                         fallbackShareOptionsDiv.style.display = 'none';
-                    }
-                }
+                console.log('DOMContentLoaded: Received message displayed.'); // DEBUG
             } else {
-                // navigator.share is not supported, show fallback options
-                showFallbackOptions(shareText, shareUrl, fullShareTextForClipboard);
+                console.log('DOMContentLoaded: No "to" and "from" URL parameters found.'); // DEBUG
             }
         });
+
+        if (shareButton) { // Check if button exists before adding listener
+            shareButton.addEventListener('click', async () => {
+                console.log('Share button clicked.'); // DEBUG
+                const senderName = senderNameInput.value.trim();
+                const friendName = friendNameInput.value.trim();
+                console.log('Sender:', senderName, 'Friend:', friendName); // DEBUG
+
+                if (!senderName || !friendName) {
+                    alert('Arre yaar! Apna aur apne dost ka naam toh likh do, tabhi toh message banega! 😉');
+                    console.log('Validation failed: Names not provided.'); // DEBUG
+                    return;
+                }
+                console.log('Validation passed.'); // DEBUG
+
+                const baseUrl = window.location.origin + window.location.pathname;
+                const shareUrl = `${baseUrl}?to=${encodeURIComponent(friendName)}&from=${encodeURIComponent(senderName)}`;
+                const shareText = `👋 Hey ${friendName}! Tumhare liye ${senderName} ki taraf se ek surprise message hai! 🎁 Jaldi se link open karke dekho kya hai:`;
+                const fullShareTextForClipboard = `${shareText}\n${shareUrl}`;
+                console.log('Share URL:', shareUrl); // DEBUG
+                console.log('Share Text for clipboard:', fullShareTextForClipboard); // DEBUG
+
+                if (navigator.share) {
+                    console.log('navigator.share API is available.'); // DEBUG
+                    try {
+                        await navigator.share({
+                            title: `💖 ${senderName} ka khaas paigaam ${friendName} ke liye! 💖`,
+                            text: shareText, // Use the shorter text for the native share dialog text field
+                            url: shareUrl
+                        });
+                        console.log('Native share successful or dialog shown.'); // DEBUG
+                        fallbackShareOptionsDiv.style.display = 'none';
+                    } catch (error) {
+                        console.error('Error sharing via navigator.share:', error.name, error.message); // DEBUG
+                        if (error.name !== 'AbortError') {
+                            console.log('navigator.share failed (not AbortError), showing fallback.'); // DEBUG
+                            showFallbackOptions(shareText, shareUrl, fullShareTextForClipboard, 'Oops! Link share nahi ho paya. Shayad tumne cancel kar diya ya koi error aa gaya. 🙁 Neeche diye gaye options try karo.');
+                        } else {
+                            console.log('Native share aborted by user.'); // DEBUG
+                            fallbackShareOptionsDiv.style.display = 'none';
+                        }
+                    }
+                } else {
+                    console.log('navigator.share API is NOT available. Showing fallback.'); // DEBUG
+                    showFallbackOptions(shareText, shareUrl, fullShareTextForClipboard);
+                }
+            });
+        } else {
+            console.error('ERROR: Could not find the shareButton element on the page!'); // DEBUG
+        }
+
 
         async function showFallbackOptions(shareText, shareUrl, fullShareTextForClipboard, customInitialMessage) {
+            console.log('showFallbackOptions called.'); // DEBUG
             let alertMessage = customInitialMessage || 'Tumhara browser direct sharing support nahi karta. 🤔\n';
             let copiedSuccess = false;
 
-            try {
-                await navigator.clipboard.writeText(fullShareTextForClipboard);
-                alertMessage += (customInitialMessage ? '\n' : '') + 'Link aur message clipboard par copy ho gaya hai! Ab ise manually share kar do ya neeche diye gaye options istemal karo. 👍';
-                copyLinkFallbackButton.textContent = '📋 Link Copied! (Copy Again)';
-                copiedSuccess = true;
-            } catch (err) {
-                console.error('Failed to copy: ', err);
-                alertMessage += (customInitialMessage ? '\n' : '') + 'Clipboard par copy karne mein dikkat hui. 😢 Kripya neeche diye gaye options istemal karein ya link ko manually copy karein.';
-                copyLinkFallbackButton.textContent = '📋 Link Copy Karein (Manual)';
-            }
-            
-            alert(alertMessage);
-
-            if (!copiedSuccess) {
-                fallbackTitleP.innerHTML = `Direct sharing support nahi hai, aur clipboard par copy karne mein bhi dikkat hui. 😢<br>
-                                Kripya neeche diye gaye options istemal karein ya link ko manually select karke copy karein:<br>
-                                <strong style="display:block; margin-top:5px; word-break: break-all;">Link:</strong> ${shareUrl}<br>
-                                <strong style="display:block; margin-top:5px;">Message:</strong> ${shareText}`;
-            } else {
-                 fallbackTitleP.innerHTML = `Browser mein direct sharing support nahi hai. Koi baat nahi! Aap yahaan se share kar sakte hain ya link copy kar ke manually bhej sakte hain. Link aur message copy ho chuka hai.`;
-            }
-
-            copyLinkFallbackButton.onclick = async () => {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                console.log('navigator.clipboard.writeText is available.'); // DEBUG
                 try {
                     await navigator.clipboard.writeText(fullShareTextForClipboard);
-                    alert('Link aur message clipboard par copy ho gaya hai! 👍');
-                    copyLinkFallbackButton.textContent = '📋 Link Copied!';
+                    alertMessage += (customInitialMessage ? '\n' : '') + 'Link aur message clipboard par copy ho gaya hai! Ab ise manually share kar do ya neeche diye gaye options istemal karo. 👍';
+                    copyLinkFallbackButton.textContent = '📋 Link Copied! (Copy Again)';
+                    copiedSuccess = true;
+                    console.log('Text copied to clipboard successfully.'); // DEBUG
                 } catch (err) {
-                    alert('Copy nahi ho paya. 😢 Kripya manually copy karein.\nLink: ' + shareUrl);
+                    console.error('Failed to copy to clipboard: ', err.name, err.message); // DEBUG
+                    alertMessage += (customInitialMessage ? '\n' : '') + 'Clipboard par copy karne mein dikkat hui. 😢 Kripya neeche diye gaye options istemal karein ya link ko manually copy karein.';
+                    copyLinkFallbackButton.textContent = '📋 Link Copy Karein (Manual)';
                 }
-            };
-
-            shareViaWhatsAppLink.href = `https://wa.me/?text=${encodeURIComponent(fullShareTextForClipboard)}`;
-            shareViaTelegramLink.href = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
-            shareViaFacebookLink.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}"e=${encodeURIComponent(shareText)}`;
-
-            fallbackShareOptionsDiv.style.display = 'block';
-            fallbackShareOptionsDiv.s
+            } else {
+                console
