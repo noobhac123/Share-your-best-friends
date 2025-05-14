@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yaari Ki Yaad</title>
+    <title>Yaari Ki Yaad - Message Center</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;600;700&display=swap');
 
@@ -15,12 +15,12 @@
 
         body {
             font-family: 'Poppins', 'Hind Siliguri', sans-serif;
-            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); /* Blue gradient */
             color: #333;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start; /* Align to top to see received message first */
             min-height: 100vh;
             padding: 20px;
             text-align: center;
@@ -31,32 +31,47 @@
             background-color: rgba(255, 255, 255, 0.98);
             padding: 30px 25px;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-            max-width: 500px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+            max-width: 550px;
             width: 90%;
-            animation: fadeIn 0.8s ease-out;
+            margin-bottom: 30px; /* Space between containers if needed */
+            animation: fadeIn 0.7s ease-out;
+        }
+        
+        .container.form-container {
+             margin-top: 0; /* No top margin for the form if it's the only thing */
+        }
+        
+        .container.received-message-container {
+            border: 2px solid #66a6ff;
+            background-color: #e0f2ff; /* Light blue */
+            animation: slideInDown 0.6s ease-out; /* Animation for received message */
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            from { opacity: 0; transform: translateY(15px) scale(0.98); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        h1, h2 {
-            color: #e74c3c; /* Warm red */
-            margin-bottom: 15px;
+
+        h1, h2, h3 {
             font-family: 'Hind Siliguri', sans-serif;
             font-weight: 700;
         }
-        h1 { font-size: 2.3em; }
-        h2 { font-size: 1.8em; margin-top: 20px; }
+        h1 { color: #007bff; font-size: 2.2em; margin-bottom: 20px; } /* Main title */
+        h2 { color: #17a2b8; font-size: 1.8em; margin-bottom: 15px; } /* Received message title */
+        h3 { color: #28a745; font-size: 1.6em; margin-bottom: 20px; } /* Create new message title */
 
 
         p.intro, p.message-text {
-            font-size: 1.1em;
-            color: #555;
-            margin-bottom: 25px;
-            line-height: 1.6;
+            font-size: 1.05em;
+            color: #454545;
+            margin-bottom: 20px;
+            line-height: 1.65;
         }
 
         .input-group {
@@ -68,36 +83,38 @@
             display: block;
             font-weight: 600;
             margin-bottom: 8px;
-            color: #444;
+            color: #333;
             font-size: 1em;
         }
 
         input[type="text"] {
             width: 100%;
             padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
             font-size: 1em;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
             font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
         }
 
         input[type="text"]:focus {
-            border-color: #fda085;
-            box-shadow: 0 0 0 3px rgba(253, 160, 133, 0.3);
+            border-color: #66a6ff;
+            box-shadow: 0 0 0 3px rgba(102, 166, 255, 0.3);
             outline: none;
+            background-color: #fff;
         }
 
         button#shareButton {
-            background: linear-gradient(to right, #e74c3c, #c0392b); /* Red gradient */
+            background: linear-gradient(to right, #28a745, #218838); /* Green gradient */
             color: white;
             border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 1.1em;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 1.05em;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
             width: 100%;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -106,90 +123,78 @@
 
         button#shareButton:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(231, 76, 60, 0.4);
-        }
-
-        button#shareButton:active {
-            transform: translateY(0px);
-            box-shadow: 0 3px 10px rgba(231, 76, 60, 0.3);
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+            background: linear-gradient(to right, #218838, #1e7e34);
         }
 
         .footer-note {
-            margin-top: 30px;
+            margin-top: 25px;
             font-size: 0.9em;
-            color: rgba(0,0,0, 0.7);
+            color: rgba(0,0,0, 0.65);
         }
 
-        #receivedMessageContainer {
-            border: 2px dashed #fda085;
-            padding: 25px;
-            border-radius: 15px;
-            background-color: #fff9f2; /* Very light orange */
-        }
-
-        #receivedMessageContainer .heart {
-            font-size: 2em;
-            color: #e74c3c;
+        .received-message-container .heart {
+            font-size: 1.8em;
+            color: #dc3545; /* Red heart */
             margin: 10px 0;
-            animation: pulse 1.5s infinite;
+            animation: pulse 1.5s infinite ease-in-out;
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-            100% { transform: scale(1); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
-
-        /* Hide elements by default */
-        .hidden {
-            display: none !important;
+        
+        hr.separator {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0));
+            margin: 30px 0;
         }
 
         /* Responsive adjustments */
         @media (max-width: 480px) {
-            h1 { font-size: 2em; }
-            h2 { font-size: 1.6em; }
+            h1 { font-size: 1.9em; }
+            h2 { font-size: 1.5em; }
+            h3 { font-size: 1.4em; }
             .container { padding: 25px 20px; }
-            input[type="text"], button#shareButton { font-size: 1em; }
-            p.intro, p.message-text { font-size: 1em; }
+            input[type="text"], button#shareButton { font-size: 0.95em; }
+            p.intro, p.message-text { font-size: 0.95em; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- This section is for creating and sharing the message -->
-        <div id="createMessageSection">
-            <h1>💌 Yaari Ki Yaad 💌</h1>
-            <p class="intro">Apne dost ko yaad kar rahe ho? Unhe ek special message bhejo!</p>
+    <!-- This container will ONLY show if a message was received via URL parameters -->
+    <div id="receivedMessageDisplay" class="container received-message-container" style="display: none;">
+        <h2>💌 Ek Paigaam Aapke Liye! 💌</h2>
+        <p id="personalizedMessage" class="message-text"></p>
+        <div class="heart">❤️</div>
+        <p class="message-text">Yeh message padh kar achha laga na? Aap bhi apne doston ko aise hi yaad dila sakte ho!</p>
+    </div>
 
-            <div class="input-group">
-                <label for="senderName">Aapka Naam:</label>
-                <input type="text" id="senderName" placeholder="Jaise: Rahul">
-            </div>
+    <!-- This container is ALWAYS visible for creating a new message -->
+    <div class="container form-container">
+        <h1>✨ Dosti Ka Paigaam ✨</h1>
+        <p class="intro">Apne dost ko special feel karao, unhe yeh message bhejo!</p>
 
-            <div class="input-group">
-                <label for="friendName">Aapke Dost Ka Naam:</label>
-                <input type="text" id="friendName" placeholder="Jaise: Priya">
-            </div>
-
-            <button id="shareButton">🔗 Link Share Karo</button>
+        <div class="input-group">
+            <label for="senderName">Aapka Naam:</label>
+            <input type="text" id="senderName" placeholder="Jaise: Rahul">
         </div>
 
-        <!-- This section is for displaying the received message -->
-        <div id="receivedMessageContainer" class="hidden">
-            <h2>Ek Paigaam Aapke Liye!</h2>
-            <p id="personalizedMessage" class="message-text"></p>
-            <div class="heart">❤️</div>
-            <p class="message-text">Jaldi milte hain!</p>
+        <div class="input-group">
+            <label for="friendName">Aapke Dost Ka Naam (Jise Bhejna Hai):</label>
+            <input type="text" id="friendName" placeholder="Jaise: Priya">
         </div>
 
-        <p class="footer-note">Dosti anmol hai! ✨</p>
+        <button id="shareButton">🔗 Link Bana Kar Share Karo</button>
+
+        <p class="footer-note">Dosti ki mehak, hamesha barkarar! 🌼</p>
     </div>
 
     <script>
-        const createMessageSection = document.getElementById('createMessageSection');
-        const receivedMessageContainer = document.getElementById('receivedMessageContainer');
+        const receivedMessageDisplay = document.getElementById('receivedMessageDisplay');
         const personalizedMessageElement = document.getElementById('personalizedMessage');
         
         const senderNameInput = document.getElementById('senderName');
@@ -204,22 +209,20 @@
             return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
         }
 
-        // On page load, check for URL parameters
+        // On page load, check for URL parameters to display received message
         window.addEventListener('DOMContentLoaded', () => {
             const toName = getUrlParameter('to');
             const fromName = getUrlParameter('from');
 
             if (toName && fromName) {
                 // If parameters exist, it means this link was shared
-                createMessageSection.classList.add('hidden'); // Hide the form
-                receivedMessageContainer.classList.remove('hidden'); // Show the message
-
-                personalizedMessageElement.innerHTML = `Hey <strong>${toName}</strong>, <br><br> Tumhare dost <strong>${fromName}</strong> ko tumhari bahut yaad aa rahi hai! Woh tumhare saath bitaye pal miss kar rahe hain. Unhone yeh special message tumhare liye bheja hai. 😊`;
-            } else {
-                // If no parameters, show the form to create a message
-                createMessageSection.classList.remove('hidden');
-                receivedMessageContainer.classList.add('hidden');
+                personalizedMessageElement.innerHTML = `Hey <strong>${toName}</strong>, <br><br> Tumhare dost <strong>${fromName}</strong> ko tumhari bahut yaad aa rahi hai! Woh tumhare saath bitaye pal, woh hasi-mazak, sab kuch miss kar rahe hain. Unhone yeh khaas paigaam sirf tumhare liye bheja hai yeh batane ke liye ki tum unki zindagi mein kitne important ho. 🤗<br><br>Jaldi milne ka plan banate hain!`;
+                receivedMessageDisplay.style.display = 'block'; // Show the received message container
+                
+                // Optional: Scroll to the received message if it's at the top
+                // window.scrollTo(0, 0); // or receivedMessageDisplay.scrollIntoView({ behavior: 'smooth' });
             }
+            // The form to create a new message is always visible by default
         });
 
         // Share button functionality
@@ -228,33 +231,33 @@
             const friendName = friendNameInput.value.trim();
 
             if (!senderName || !friendName) {
-                alert('Bhai, apna aur apne dost ka naam toh likho!');
+                alert('Bhai, apna aur apne dost ka naam toh likho taaki message sahi se ban sake!');
                 return;
             }
 
-            // Construct the URL with parameters
-            // Get base URL without existing query params or hash
             const baseUrl = window.location.origin + window.location.pathname;
             const shareUrl = `${baseUrl}?to=${encodeURIComponent(friendName)}&from=${encodeURIComponent(senderName)}`;
 
-            const shareText = `Hey ${friendName}! Tumhare liye ${senderName} ki taraf se ek special message hai. Click karke dekho:`;
+            const shareText = `👋 Hey ${friendName}! Tumhare pyare dost ${senderName} ki taraf se ek surprise message hai. Miss kar rahe hain woh tumhe! 💌 Link open karke dekho:`;
 
             if (navigator.share) {
                 try {
                     await navigator.share({
-                        title: `Ek Message ${friendName} Ke Liye!`,
-                        text: shareText, // Text to accompany the URL
-                        url: shareUrl    // The URL of this page with parameters
+                        title: `Ek Yaadgaar Message ${friendName} Ke Liye, ${senderName} Ki Taraf Se!`,
+                        text: shareText,
+                        url: shareUrl
                     });
                     console.log('Link shared successfully!');
+                    // Clear input fields after successful share (optional)
+                    // senderNameInput.value = '';
+                    // friendNameInput.value = '';
                 } catch (error) {
                     console.error('Error sharing:', error);
                     if (error.name !== 'AbortError') {
-                        alert('Oops! Link share nahi ho paya.');
+                        alert('Oops! Link share nahi ho paya. Shayad aapne cancel kar diya.');
                     }
                 }
             } else {
-                // Fallback for browsers that don't support Web Share API
                 try {
                     await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
                     alert('Aapka browser direct sharing support nahi karta.\nLink aur message clipboard par copy ho gaya hai! Aap ise manually share kar sakte hain.');
