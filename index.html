@@ -5,17 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yaari Ke Lamhe ✨</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Baloo+Bhai+2:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Baloo+Bhai+2:wght@400;500;600;700;800&display=swap');
 
         :root {
             --primary-color: #ff6b6b; /* Coral Pink */
+            --primary-color-rgb: 255, 107, 107;
             --secondary-color: #4ecdc4; /* Tealish Blue */
+            --secondary-color-rgb: 78, 205, 196;
             --accent-color: #ffe66d; /* Sunny Yellow */
-            --text-color: #4A4A4A; /* Dark Gray */
-            --bg-color-light: #fdfdfd;
-            --bg-color-dark: #f0f0f0;
-            --border-radius: 12px;
-            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --text-color: #333; /* Slightly darker for better contrast */
+            --text-color-light: #555;
+            --bg-color-light: #ffffff; /* Pure white for main container */
+            --bg-color-dark: #f7f7f7; /* Light gray for inputs */
+            --border-radius: 14px; /* Slightly more rounded */
+            --box-shadow-soft: 0 6px 20px rgba(0, 0, 0, 0.07);
+            --box-shadow-strong: 0 10px 30px rgba(0, 0, 0, 0.1);
             --font-primary: 'Poppins', sans-serif;
             --font-headings: 'Baloo Bhai 2', cursive;
         }
@@ -32,13 +36,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: flex-start; /* Changed from center to allow scroll for two boxes */
             min-height: 100vh;
             padding: 25px;
             text-align: center;
             overflow-x: hidden;
-            background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%); /* Soft Pink Gradient */
-            position: relative; /* For pseudo-element animations */
+            background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 40%, #fad0c4 100%); /* Refined Pink Gradient */
+            position: relative;
         }
 
         /* Animated background shapes (subtle) */
@@ -49,74 +53,79 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* Behind content */
-            pointer-events: none; /* Allow clicks through */
+            z-index: -1;
+            pointer-events: none;
         }
 
         body::before {
             background:
-                radial-gradient(circle at 10% 20%, rgba(255, 230, 109, 0.2) 0%, transparent 30%), /* Yellowish */
-                radial-gradient(circle at 80% 30%, rgba(78, 205, 196, 0.2) 0%, transparent 30%), /* Tealish */
-                radial-gradient(circle at 30% 80%, rgba(255, 107, 107, 0.15) 0%, transparent 25%); /* Pinkish */
-            animation: floatShapes 20s infinite ease-in-out alternate;
+                radial-gradient(circle at 15% 25%, rgba(255, 230, 109, 0.15) 0%, transparent 35%), /* Yellowish */
+                radial-gradient(circle at 85% 35%, rgba(78, 205, 196, 0.18) 0%, transparent 35%), /* Tealish */
+                radial-gradient(circle at 35% 75%, rgba(255, 107, 107, 0.12) 0%, transparent 30%); /* Pinkish */
+            animation: floatShapes 25s infinite ease-in-out alternate;
         }
         
-        body::after { /* For more subtle texture or lines */
+        body::after { /* Subtle texture */
             background:
-                linear-gradient(135deg, rgba(255,255,255,0.05) 25%, transparent 25%),
-                linear-gradient(225deg, rgba(255,255,255,0.05) 25%, transparent 25%);
-            background-size: 20px 20px;
-            opacity: 0.5;
+                linear-gradient(135deg, rgba(255,255,255,0.03) 25%, transparent 25%),
+                linear-gradient(225deg, rgba(255,255,255,0.03) 25%, transparent 25%);
+            background-size: 25px 25px;
+            opacity: 0.6;
         }
-
 
         @keyframes floatShapes {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(10px, -15px) rotate(5deg); }
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            100% { transform: translate(15px, -20px) rotate(8deg) scale(1.05); }
         }
-
 
         .container {
             background-color: var(--bg-color-light);
             padding: 35px 30px;
             border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
+            box-shadow: var(--box-shadow-strong);
             max-width: 580px;
             width: 95%;
-            margin-bottom: 35px;
-            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            border-top: 5px solid var(--primary-color);
+            margin-top: 20px; /* Added margin for when both are visible */
+            margin-bottom: 30px;
+            animation: popIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s forwards;
+            opacity: 0;
+            border-top: 6px solid var(--primary-color);
+            position: relative; /* For potential future pseudo elements */
+        }
+        
+        .container:first-of-type { /* If received message shows, it might be the first */
+             margin-top: 0;
         }
 
+
         @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+            0% { opacity: 0; transform: scale(0.9) translateY(30px); }
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
         
         .received-message-container {
-            border-top-color: var(--secondary-color); /* Different top border for received msg */
-            background-color: #e6fffa; /* Very light teal */
+            border-top-color: var(--secondary-color);
+            background-color: rgba(var(--secondary-color-rgb), 0.05); /* Very light teal background */
+            animation-delay: 0s; /* Show received message immediately */
         }
         
         .received-message-container h2 { color: var(--secondary-color) !important; }
         .received-message-container .heart { color: var(--primary-color); }
 
-
         h1, h2, h3 {
             font-family: var(--font-headings);
-            font-weight: 700;
+            font-weight: 700; /* Baloo Bhai 2 bold */
             line-height: 1.3;
         }
-        h1 { color: var(--primary-color); font-size: 2.6em; margin-bottom: 15px; }
-        h2 { color: var(--primary-color); font-size: 2em; margin-bottom: 15px; } /* Received message title */
-        h3 { color: var(--primary-color); font-size: 1.8em; margin-bottom: 20px; } /* Create new message title */
-
+        h1 { color: var(--primary-color); font-size: 2.5em; margin-bottom: 15px; letter-spacing: -0.5px; }
+        h2 { color: var(--primary-color); font-size: 2em; margin-bottom: 15px; } 
+        h3 { color: var(--primary-color); font-size: 1.7em; margin-bottom: 20px; }
 
         p.intro, p.message-text {
-            font-size: 1.1em; /* Increased base size */
-            color: var(--text-color);
+            font-size: 1.05em; 
+            color: var(--text-color-light);
             margin-bottom: 25px;
-            line-height: 1.7;
+            line-height: 1.75;
             font-weight: 400;
         }
         p.message-text strong {
@@ -127,190 +136,138 @@
             color: var(--secondary-color);
         }
 
-
         .input-group {
-            margin-bottom: 25px;
+            margin-bottom: 22px;
             text-align: left;
         }
 
         label {
             display: block;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: var(--text-color);
-            font-size: 1.05em;
+            font-size: 1em;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 15px 18px;
-            border: 1px solid #ddd;
-            border-radius: var(--border-radius);
+            padding: 14px 18px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px; /* Slightly less rounded than container */
             font-size: 1em;
             font-family: var(--font-primary);
             font-weight: 500;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease-in-out;
             background-color: var(--bg-color-dark);
+            color: var(--text-color);
         }
 
         input[type="text"]::placeholder {
-            color: #999;
+            color: #aaa;
             font-weight: 400;
         }
 
         input[type="text"]:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.25);
+            box-shadow: 0 0 0 3.5px rgba(var(--primary-color-rgb), 0.2);
             outline: none;
             background-color: var(--bg-color-light);
         }
 
         button#shareButton {
-            background: linear-gradient(45deg, var(--primary-color), #ff8c8c);
+            background: linear-gradient(45deg, var(--primary-color), #ff8a8a);
             color: white;
             border: none;
-            padding: 16px 30px;
-            border-radius: var(--border-radius);
-            font-size: 1.15em;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1em;
             font-family: var(--font-headings);
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease-in-out;
             width: 100%;
             text-transform: capitalize;
-            letter-spacing: 0.5px;
-            margin-top: 15px;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            letter-spacing: 0.3px;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(var(--primary-color-rgb), 0.25);
         }
 
         button#shareButton:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
-            background: linear-gradient(45deg, #ff8c8c, var(--primary-color));
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(var(--primary-color-rgb), 0.3);
+            background: linear-gradient(45deg, #ff8a8a, var(--primary-color));
         }
         button#shareButton:active {
             transform: translateY(-1px) scale(0.99);
-            box-shadow: 0 2px 10px rgba(255, 107, 107, 0.3);
+            box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.2);
         }
 
         .footer-note {
-            margin-top: 30px; /* Increased margin if fallback options are visible */
-            font-size: 0.95em;
-            color: rgba(0,0,0, 0.6);
+            margin-top: 25px;
+            font-size: 0.9em;
+            color: var(--text-color-light);
             font-weight: 500;
         }
         .footer-note .emoji {
-            font-size: 1.2em;
+            font-size: 1.1em;
+            display: inline-block;
+            transform-origin: center bottom;
+            animation: emojiWave 2s infinite ease-in-out;
+        }
+        
+        @keyframes emojiWave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            75% { transform: rotate(-10deg); }
         }
 
+
         .received-message-container .heart {
-            font-size: 2.5em; /* Larger heart */
-            margin: 15px 0;
+            font-size: 2.8em; 
+            margin: 15px 0 20px;
             animation: heartBeat 1.2s infinite cubic-bezier(0.215, 0.610, 0.355, 1);
         }
 
         @keyframes heartBeat {
             0% { transform: scale(1); }
-            14% { transform: scale(1.3); }
+            14% { transform: scale(1.35); }
             28% { transform: scale(1); }
-            42% { transform: scale(1.3); }
+            42% { transform: scale(1.35); }
             70% { transform: scale(1); }
         }
         
-        hr.separator {
+        hr.separator { /* This element is not in the HTML, but keeping styles if you add it */
             border: 0;
-            height: 2px;
+            height: 1.5px;
             background-image: linear-gradient(to right, transparent, var(--accent-color), transparent);
-            margin: 40px 15%;
+            margin: 35px 20%;
         }
-
-        /* Fallback Share Options Styling */
-        #fallbackShareOptions {
-            margin-top: 25px;
-            padding: 20px;
-            background-color: var(--bg-color-dark);
-            border-radius: var(--border-radius);
-            border: 1px solid #eee;
-        }
-        #fallbackShareOptions p.fallback-title {
-            margin-bottom: 15px;
-            font-weight: 500;
-            color: var(--text-color);
-            font-size: 0.95em;
-            line-height: 1.6;
-        }
-        #copyLinkFallback {
-            background: var(--secondary-color);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: var(--border-radius);
-            font-size: 1em;
-            font-family: var(--font-headings);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: auto;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.25);
-        }
-        #copyLinkFallback:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.35);
-        }
-        .social-share-buttons-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-        }
-        .social-share-btn {
-            display: inline-flex; /* For aligning icon and text if any */
-            align-items: center;
-            justify-content: center;
-            padding: 10px 18px;
-            border-radius: var(--border-radius);
-            color: white !important; /* Ensure text is white */
-            text-decoration: none;
-            font-family: var(--font-primary);
-            font-weight: 500;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            font-size: 0.9em;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .social-share-btn:hover {
-            transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        .whatsapp-btn { background-color: #25D366; }
-        .telegram-btn { background-color: #0088cc; }
-        .facebook-btn { background-color: #1877F2; }
-
 
         /* Responsive adjustments */
         @media (max-width: 600px) {
-            h1 { font-size: 2.2em; }
-            h2 { font-size: 1.8em; }
-            h3 { font-size: 1.6em; }
-            .container { padding: 30px 20px; width: 100%; }
+            body { padding: 20px 15px; }
+            h1 { font-size: 2.1em; }
+            h2 { font-size: 1.7em; }
+            h3 { font-size: 1.5em; }
+            .container { padding: 30px 20px; width: 100%; margin-bottom: 25px; }
             input[type="text"], button#shareButton { font-size: 1em; }
-            p.intro, p.message-text { font-size: 1em; }
+            p.intro, p.message-text { font-size: 0.95em; }
             button#shareButton { padding: 14px 25px; }
-            .social-share-btn { padding: 9px 15px; font-size: 0.85em; }
-            #copyLinkFallback {padding: 10px 20px; font-size: 0.95em;}
+            .footer-note { font-size: 0.85em; }
         }
     </style>
 </head>
 <body>
-    <div id="background-animation"></div>
 
+    <!-- This container will ONLY show if a message was received via URL parameters -->
     <div id="receivedMessageDisplay" class="container received-message-container" style="display: none;">
         <h2>💌 Tumhare Liye Paigaam! 💌</h2>
         <p id="personalizedMessage" class="message-text"></p>
         <div class="heart">💖</div>
-        <p class="message-text" style="font-weight: 500;">Yeh padh kar achha laga na? Ab tum bhi apne doston ko aise hi yaad dila sakte ho!</p>
+        <p class="message-text" style="font-weight: 500; font-size: 0.95em;">Yeh padh kar achha laga na? Ab tum bhi apne doston ko aise hi yaad dila sakte ho neeche diye gaye form se!</p>
     </div>
 
+    <!-- This container is ALWAYS visible for creating a new message -->
     <div class="container form-container">
         <h1>✨ Yaari Ke Lamhe ✨</h1>
         <p class="intro">Apne jigri dost ko yeh pyaara sa message bhejo aur unka din bana do!</p>
@@ -327,42 +284,16 @@
 
         <button id="shareButton">🔗 Link Banaao aur Bhejo!</button>
 
-        <!-- Fallback Share Options - Initially Hidden -->
-        <div id="fallbackShareOptions" style="display: none;">
-            <p class="fallback-title">
-                Browser mein direct sharing support nahi hai. Koi baat nahi! Aap yahaan se share kar sakte hain ya link copy kar ke manually bhej sakte hain.
-            </p>
-            <div style="margin-bottom: 15px;">
-                <button id="copyLinkFallback">📋 Link Copy Karein</button>
-            </div>
-            <div class="social-share-buttons-container">
-                <a href="#" id="shareViaWhatsApp" target="_blank" class="social-share-btn whatsapp-btn">WhatsApp</a>
-                <a href="#" id="shareViaTelegram" target="_blank" class="social-share-btn telegram-btn">Telegram</a>
-                <a href="#" id="shareViaFacebook" target="_blank" class="social-share-btn facebook-btn">Facebook</a>
-            </div>
-        </div>
-        <!-- End of Fallback Share Options -->
-
         <p class="footer-note">Dosti ka rishta, sabse anmol! <span class="emoji">🌟</span></p>
     </div>
 
     <script>
-        // --- START OF MODIFIED SCRIPT ---
         const receivedMessageDisplay = document.getElementById('receivedMessageDisplay');
         const personalizedMessageElement = document.getElementById('personalizedMessage');
         
         const senderNameInput = document.getElementById('senderName');
         const friendNameInput = document.getElementById('friendName');
         const shareButton = document.getElementById('shareButton');
-
-        // Fallback share elements
-        const fallbackShareOptionsDiv = document.getElementById('fallbackShareOptions');
-        const fallbackTitleP = fallbackShareOptionsDiv.querySelector('p.fallback-title');
-        const copyLinkFallbackButton = document.getElementById('copyLinkFallback');
-        const shareViaWhatsAppLink = document.getElementById('shareViaWhatsApp');
-        const shareViaTelegramLink = document.getElementById('shareViaTelegram');
-        const shareViaFacebookLink = document.getElementById('shareViaFacebook');
-
 
         function getUrlParameter(name) {
             name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -372,89 +303,65 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            console.log('DOMContentLoaded: Page loaded.'); // DEBUG
             const toName = getUrlParameter('to');
             const fromName = getUrlParameter('from');
 
             if (toName && fromName) {
-                console.log('DOMContentLoaded: Found URL parameters - to:', toName, 'from:', fromName); // DEBUG
                 personalizedMessageElement.innerHTML = `Hey <strong>${toName}</strong>, mere yaar! <br><br> Kya haal chaal? Main, tumhara dost <strong>${fromName}</strong>, tumhe bahut miss kar raha/rahi hoon! Woh apni purani baatein, hasi-thahake, aur saari masti... sab kuch itna yaad aata hai na! Socha, ek chhota sa message bhej kar tumhe yaad dila doon ki tum kitne special ho. <br><br>Stay awesome, aur jaldi milte hain! Loads of love! 🤗`;
                 receivedMessageDisplay.style.display = 'block';
-                receivedMessageDisplay.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                console.log('DOMContentLoaded: Received message displayed.'); // DEBUG
-            } else {
-                console.log('DOMContentLoaded: No "to" and "from" URL parameters found.'); // DEBUG
+                // Optional: Scroll to the received message if it's out of view
+                // receivedMessageDisplay.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
 
-        if (shareButton) { // Check if button exists before adding listener
-            shareButton.addEventListener('click', async () => {
-                console.log('Share button clicked.'); // DEBUG
-                const senderName = senderNameInput.value.trim();
-                const friendName = friendNameInput.value.trim();
-                console.log('Sender:', senderName, 'Friend:', friendName); // DEBUG
+        shareButton.addEventListener('click', async () => {
+            const senderName = senderNameInput.value.trim();
+            const friendName = friendNameInput.value.trim();
 
-                if (!senderName || !friendName) {
-                    alert('Arre yaar! Apna aur apne dost ka naam toh likh do, tabhi toh message banega! 😉');
-                    console.log('Validation failed: Names not provided.'); // DEBUG
-                    return;
-                }
-                console.log('Validation passed.'); // DEBUG
+            if (!senderName || !friendName) {
+                alert('Arre yaar! Apna aur apne dost ka naam toh likh do, tabhi toh message banega! 😉');
+                return;
+            }
 
-                const baseUrl = window.location.origin + window.location.pathname;
-                const shareUrl = `${baseUrl}?to=${encodeURIComponent(friendName)}&from=${encodeURIComponent(senderName)}`;
-                const shareText = `👋 Hey ${friendName}! Tumhare liye ${senderName} ki taraf se ek surprise message hai! 🎁 Jaldi se link open karke dekho kya hai:`;
-                const fullShareTextForClipboard = `${shareText}\n${shareUrl}`;
-                console.log('Share URL:', shareUrl); // DEBUG
-                console.log('Share Text for clipboard:', fullShareTextForClipboard); // DEBUG
+            const baseUrl = window.location.origin + window.location.pathname;
+            const shareUrl = `${baseUrl}?to=${encodeURIComponent(friendName)}&from=${encodeURIComponent(senderName)}`;
 
-                if (navigator.share) {
-                    console.log('navigator.share API is available.'); // DEBUG
-                    try {
-                        await navigator.share({
-                            title: `💖 ${senderName} ka khaas paigaam ${friendName} ke liye! 💖`,
-                            text: shareText, // Use the shorter text for the native share dialog text field
-                            url: shareUrl
-                        });
-                        console.log('Native share successful or dialog shown.'); // DEBUG
-                        fallbackShareOptionsDiv.style.display = 'none';
-                    } catch (error) {
-                        console.error('Error sharing via navigator.share:', error.name, error.message); // DEBUG
-                        if (error.name !== 'AbortError') {
-                            console.log('navigator.share failed (not AbortError), showing fallback.'); // DEBUG
-                            showFallbackOptions(shareText, shareUrl, fullShareTextForClipboard, 'Oops! Link share nahi ho paya. Shayad tumne cancel kar diya ya koi error aa gaya. 🙁 Neeche diye gaye options try karo.');
-                        } else {
-                            console.log('Native share aborted by user.'); // DEBUG
-                            fallbackShareOptionsDiv.style.display = 'none';
-                        }
-                    }
-                } else {
-                    console.log('navigator.share API is NOT available. Showing fallback.'); // DEBUG
-                    showFallbackOptions(shareText, shareUrl, fullShareTextForClipboard);
-                }
-            });
-        } else {
-            console.error('ERROR: Could not find the shareButton element on the page!'); // DEBUG
-        }
-
-
-        async function showFallbackOptions(shareText, shareUrl, fullShareTextForClipboard, customInitialMessage) {
-            console.log('showFallbackOptions called.'); // DEBUG
-            let alertMessage = customInitialMessage || 'Tumhara browser direct sharing support nahi karta. 🤔\n';
-            let copiedSuccess = false;
-
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                console.log('navigator.clipboard.writeText is available.'); // DEBUG
+            const shareTitle = `💖 ${senderName} ka khaas paigaam ${friendName} ke liye! 💖`;
+            const shareText = `👋 Hey ${friendName}! Tumhare liye ${senderName} ki taraf se ek surprise message hai! 🎁 Jaldi se link open karke dekho kya hai:`;
+            
+            // The Web Share API (navigator.share) is the modern way to share.
+            // It opens the device's native share dialog, allowing users to choose
+            // from installed apps like WhatsApp, Messenger, Telegram, Facebook, Instagram (DMs/Stories), etc.
+            if (navigator.share) {
                 try {
-                    await navigator.clipboard.writeText(fullShareTextForClipboard);
-                    alertMessage += (customInitialMessage ? '\n' : '') + 'Link aur message clipboard par copy ho gaya hai! Ab ise manually share kar do ya neeche diye gaye options istemal karo. 👍';
-                    copyLinkFallbackButton.textContent = '📋 Link Copied! (Copy Again)';
-                    copiedSuccess = true;
-                    console.log('Text copied to clipboard successfully.'); // DEBUG
-                } catch (err) {
-                    console.error('Failed to copy to clipboard: ', err.name, err.message); // DEBUG
-                    alertMessage += (customInitialMessage ? '\n' : '') + 'Clipboard par copy karne mein dikkat hui. 😢 Kripya neeche diye gaye options istemal karein ya link ko manually copy karein.';
-                    copyLinkFallbackButton.textContent = '📋 Link Copy Karein (Manual)';
+                    await navigator.share({
+                        title: shareTitle,
+                        text: shareText, // This text is often pre-filled in the chosen app
+                        url: shareUrl   // The link to be shared
+                    });
+                    // You can add a success message here if needed
+                    // Example: alert('Message link taiyaar hai aur share dialog open ho gaya!');
+                    // senderNameInput.value = ''; // Optional: clear fields after sharing
+                    // friendNameInput.value = '';
+                } catch (error) {
+                    console.error('Error sharing:', error);
+                    // AbortError typically means the user closed the share dialog
+                    if (error.name !== 'AbortError') {
+                        alert('Oops! Link share nahi ho paya. Shayad tumne cancel kar diya ya koi error aa gaya. 🙁');
+                    }
                 }
             } else {
-                console
+                // Fallback for browsers that don't support navigator.share (e.g., many desktop browsers)
+                try {
+                    await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+                    alert('Tumhara browser direct sharing support nahi karta. 🤔\nKoi baat nahi, link aur message clipboard par copy ho gaya hai! Ab ise manually WhatsApp, Facebook, ya kisi aur app par paste karke share kar do. 👍');
+                } catch (err) {
+                    console.error('Failed to copy to clipboard:', err);
+                    alert('Browser direct sharing support nahi karta aur copy bhi nahi ho paya. 😢\nYeh raha tumhara link, manually copy kar lo:\n\n' + shareUrl);
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
