@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-<html lang="hi">
+<!-- Defaulting to English, will be changed by JS -->
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yaari Dosti Ke Naam 💖</title>
+    <!-- Title will be set by JS based on language -->
+    <title>Friendship Spark</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Fredoka+One&family=Baloo+Bhai+2:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Mochiy+Pop+One&family=Baloo+Bhai+2:wght@400;500;600;700&display=swap');
 
         :root {
-            --primary-color: #ff4757; /* Lively Red/Pink */
-            --secondary-color: #1e90ff; /* Dodger Blue */
-            --accent-color: #feca57; /* Bright Yellow */
-            --text-color: #34495e; /* Dark Blue-Gray */
-            --bg-color-light: #ffffff;
-            --bg-color-soft: #f8f9fa;
-            --border-radius: 15px;
-            --box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+            --primary-color: #ff6347; /* Tomato */
+            --secondary-color: #4682b4; /* Steel Blue */
+            --accent-color: #ffd700; /* Gold */
+            --text-color: #2c3e50; /* Midnight Blue */
+            --bg-color-light: #fff;
+            --bg-color-soft: #f4f6f8;
+            --border-radius: 18px;
+            --box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
             --font-primary: 'Poppins', sans-serif;
-            --font-headings: 'Baloo Bhai 2', 'Fredoka One', cursive; /* Added Fredoka One for more fun */
+            --font-headings: 'Mochiy Pop One', 'Baloo Bhai 2', cursive;
         }
 
         * {
@@ -34,117 +36,99 @@
             align-items: center;
             justify-content: flex-start;
             min-height: 100vh;
-            padding: 25px;
+            padding: 20px 15px; /* Adjusted padding */
             text-align: center;
-            overflow: hidden; /* Important for full-page animations */
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradientBG 20s ease infinite;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            overflow-y: auto; /* Allow vertical scroll */
+            background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
             position: relative;
+            transition: background 0.5s ease;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        @keyframes dynamicGradient {
+            0%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 50%}
+        }
+        body.theme-cool {
+            background: linear-gradient(-45deg, #23a6d5, #23d5ab, #60efff, #007991);
+            background-size: 400% 400%;
+            animation: dynamicGradient 18s ease infinite;
+        }
+        body.theme-warm {
+             background: linear-gradient(-45deg, #ee7752, #e73c7e, #ff7f50, #f08080);
+            background-size: 400% 400%;
+            animation: dynamicGradient 18s ease infinite;
         }
 
-        /* Friendship Themed Animated Elements */
-        .friendship-elements {
+
+        /* Floating Emojis - Friendship Themed */
+        .floating-emojis {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             overflow: hidden;
-            z-index: 0; /* Behind content */
+            z-index: 0;
             pointer-events: none;
         }
 
-        .element {
+        .emoji-float {
             position: absolute;
-            display: block;
-            list-style: none;
-            animation: animateElements 25s linear infinite;
-            bottom: -150px; /* Start from below the screen */
-            font-size: 1.5rem; /* Default size, can be varied */
-            opacity: 0; /* Start invisible */
+            font-size: 1.2rem; /* Base size */
+            animation: floatUp 20s linear infinite;
+            opacity: 0;
+            /* Emojis will be set via JS */
         }
 
-        /* Different elements and their initial positions/animations */
-        .element:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; content: '💖'; }
-        .element:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; content: '⭐'; }
-        .element:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; content: '😊'; }
-        .element:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; content: '✨';}
-        .element:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; content: '🤝'; }
-        .element:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; content: '🎉'; font-size: 3rem;}
-        .element:nth-child(7) { left: 35%; width: 150px; height: 150px; animation-delay: 7s; content: '🎈'; font-size: 4rem;}
-        .element:nth-child(8) { left: 50%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; content: '🎶';}
-        .element:nth-child(9) { left: 20%; width: 15px; height: 15px; animation-delay: 2s; animation-duration: 35s; content: '☀️';}
-        .element:nth-child(10) { left: 85%; width: 150px; height: 150px; animation-delay: 0s; animation-duration: 11s; content: '😂'; font-size: 3.5rem;}
-        .element:nth-child(11) { left: 5%; width: 40px; height: 40px; animation-delay: 5s; animation-duration: 20s; content: '👍';}
-        .element:nth-child(12) { left: 90%; width: 30px; height: 30px; animation-delay: 8s; animation-duration: 15s; content: '💯';}
-
-        @keyframes animateElements {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-                /* border-radius: 0; */ /* Can animate border-radius too */
-            }
-            100% {
-                transform: translateY(-100vh) rotate(720deg); /* Move up and rotate */
-                opacity: 0;
-                /* border-radius: 50%; */
-            }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
         }
-
 
         .container {
-            background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white */
-            padding: 35px 30px;
+            background-color: var(--bg-color-light);
+            padding: clamp(25px, 5vw, 40px); /* Responsive padding */
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
-            max-width: 580px;
-            width: 95%;
-            margin-bottom: 35px;
-            animation: popInFromBottom 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-            position: relative; /* To ensure it's above the .friendship-elements */
+            max-width: 600px;
+            width: 100%;
+            margin-bottom: 30px;
+            position: relative;
             z-index: 1;
-            border-top: 6px solid;
+            border-top: 7px solid;
+            animation: slideInUp 0.7s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
         }
         .form-container { border-top-color: var(--primary-color); }
-        .received-message-container { border-top-color: var(--secondary-color); }
-
-
-        @keyframes popInFromBottom {
-            0% { opacity: 0; transform: translateY(50px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        
         .received-message-container {
-            background-color: rgba(230, 247, 255, 0.95); /* Light blue, slightly transparent */
+            border-top-color: var(--secondary-color);
+            background-color: #eaf2f8; /* Softer blue tint */
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(60px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .received-message-container h2 { color: var(--secondary-color) !important; }
-        .received-message-container .heart { color: var(--primary-color); }
-
 
         h1, h2, h3 {
             font-family: var(--font-headings);
-            font-weight: 700; /* Baloo Bhai 2 handles this well */
-            line-height: 1.3;
+            font-weight: normal; /* Mochiy Pop One is bold by default */
+            line-height: 1.25;
             letter-spacing: 0.5px;
+            margin-bottom: 18px;
         }
-        h1 { color: var(--primary-color); font-size: 2.5em; margin-bottom: 15px; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
-        h2 { color: var(--secondary-color); font-size: 2em; margin-bottom: 15px; }
-        h3 { color: var(--primary-color); font-size: 1.8em; margin-bottom: 20px; }
-
+        h1 { color: var(--primary-color); font-size: clamp(2em, 6vw, 2.8em); }
+        h2 { color: var(--secondary-color); font-size: clamp(1.7em, 5vw, 2.2em); }
 
         p.intro, p.message-text {
-            font-size: 1.05em;
+            font-size: clamp(1em, 2.5vw, 1.15em);
             color: var(--text-color);
-            margin-bottom: 25px;
-            line-height: 1.75;
+            margin-bottom: 22px;
+            line-height: 1.7;
             font-weight: 400;
         }
         p.message-text strong {
@@ -155,169 +139,251 @@
             color: var(--secondary-color);
         }
 
-
         .input-group {
-            margin-bottom: 25px;
+            margin-bottom: 22px;
             text-align: left;
         }
 
         label {
             display: block;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #555;
-            font-size: 1em;
+            font-size: clamp(0.9em, 2.2vw, 1em);
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 14px 18px;
-            border: 2px solid #e0e0e0;
-            border-radius: var(--border-radius);
-            font-size: 1em;
+            padding: 15px 20px;
+            border: 2px solid #dfe4ea;
+            border-radius: calc(var(--border-radius) - 4px);
+            font-size: clamp(0.95em, 2.3vw, 1.05em);
             font-family: var(--font-primary);
             font-weight: 500;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease-in-out;
             background-color: var(--bg-color-soft);
         }
-
-        input[type="text"]::placeholder {
-            color: #aaa;
-            font-weight: 400;
-        }
-
+        input[type="text"]::placeholder { color: #95a5a6; font-weight: 400; }
         input[type="text"]:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3.5px rgba(255, 71, 87, 0.2);
+            box-shadow: 0 0 0 4px rgba(255, 99, 71, 0.15);
             outline: none;
             background-color: var(--bg-color-light);
         }
 
         button#shareButton {
-            background: linear-gradient(45deg, var(--primary-color), #ff7675); /* d35400 e67e22 */
+            background: linear-gradient(45deg, var(--primary-color), #ff7f50);
             color: white;
             border: none;
             padding: 16px 30px;
             border-radius: var(--border-radius);
-            font-size: 1.1em;
+            font-size: clamp(1em, 2.8vw, 1.15em);
             font-family: var(--font-headings);
-            font-weight: 600; /* Baloo Bhai 2 */
+            font-weight: normal;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease-in-out;
             width: 100%;
-            text-transform: capitalize; /* Was uppercase, now capitalize for friendlier look */
-            letter-spacing: 1px;
-            margin-top: 15px;
-            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.35);
+            text-transform: capitalize;
+            letter-spacing: 0.8px;
+            margin-top: 10px;
+            box-shadow: 0 6px 20px rgba(255, 99, 71, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-
+        button#shareButton .icon { font-size: 1.2em; }
         button#shareButton:hover {
-            transform: translateY(-4px) scale(1.03);
-            box-shadow: 0 10px 25px rgba(255, 71, 87, 0.45);
-            background: linear-gradient(45deg, #ff7675, var(--primary-color));
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(255, 99, 71, 0.4);
         }
         button#shareButton:active {
-            transform: translateY(-1px) scale(0.98);
-            box-shadow: 0 2px 10px rgba(255, 71, 87, 0.3);
+            transform: translateY(-1px) scale(0.99);
+            box-shadow: 0 3px 15px rgba(255, 99, 71, 0.25);
         }
 
         .footer-note {
-            margin-top: 20px;
-            font-size: 0.9em;
-            color: rgba(255,255,255,0.8); /* Light text for dark BG */
+            margin-top: 25px;
+            font-size: clamp(0.85em, 2vw, 0.95em);
+            color: var(--text-color);
+            opacity: 0.8;
             font-weight: 500;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
-        .footer-note .emoji {
-            font-size: 1.2em;
-            vertical-align: middle;
+        .lang-switcher {
+            margin-top: 15px; font-size: 0.8em;
         }
+        .lang-switcher button {
+            background: none; border: 1px solid var(--primary-color); color: var(--primary-color);
+            padding: 5px 10px; margin: 0 5px; border-radius: 5px; cursor: pointer;
+        }
+         .lang-switcher button.active { background: var(--primary-color); color: white; }
 
         .received-message-container .heart {
-            font-size: 2.8em; /* Larger heart */
-            margin: 15px 0;
-            animation: heartBeatEnhanced 1.3s infinite ease-in-out;
+            font-size: clamp(2.5em, 8vw, 3.5em);
+            margin: 15px 0 20px;
+            animation: heartPop 1.5s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
             display: inline-block;
         }
-
-        @keyframes heartBeatEnhanced {
+        @keyframes heartPop {
             0%, 100% { transform: scale(1); }
-            10%, 30% { transform: scale(0.9) rotate(-3deg); }
-            20%, 40% { transform: scale(1.1) rotate(3deg); }
-            50% { transform: scale(1.05) rotate(-1deg); }
-        }
-        
-        hr.separator {
-            display: none; /* Not using it for now */
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            body { padding: 15px; }
-            h1 { font-size: 2.1em; }
-            h2 { font-size: 1.7em; }
-            h3 { font-size: 1.5em; }
-            .container { padding: 25px 20px; width: 100%; }
-            input[type="text"], button#shareButton { font-size: 0.95em; }
-            p.intro, p.message-text { font-size: 0.98em; }
-            button#shareButton { padding: 14px 25px; }
-            .element { font-size: 1.2rem; } /* Adjust animated elements size */
-             .element:nth-child(6), .element:nth-child(7), .element:nth-child(10) { font-size: 2.5rem; }
+            25% { transform: scale(0.8) rotate(-5deg); }
+            50% { transform: scale(1.2) rotate(5deg); }
+            75% { transform: scale(0.9) rotate(0deg); }
         }
     </style>
 </head>
 <body>
-    <!-- Friendship Themed Animated Elements -->
-    <ul class="friendship-elements">
-        <li class="element"></li>
-        <li class="element"></li>
-        <li class="element"></li>
-        <li class="element"></li>
-        <li class="element"></li>
-        <li class="element"></li>
-        <li class="element"></li>
-        <li class="element"></li>
-        <li class="element"></li>
-        <li class="element"></li>
-        <li class="element"></li>
-        <li class="element"></li>
-    </ul>
-
-    <!-- Received Message Display Area -->
-    <div id="receivedMessageDisplay" class="container received-message-container" style="display: none;">
-        <h2>🎉 Ek Surprize Tumhare Liye! 🎉</h2>
-        <p id="personalizedMessage" class="message-text"></p>
-        <div class="heart">💖</div>
-        <p class="message-text" style="font-weight: 500;">Dosti ki yeh yaad taaza karke kaisa laga? Ab tum bhi apne doston ko aise hi khush kar sakte ho!</p>
+    <div class="floating-emojis" id="floatingEmojisContainer">
+        <!-- Emojis will be added here by JavaScript -->
     </div>
 
-    <!-- Message Creation Form Area -->
+    <div id="receivedMessageDisplay" class="container received-message-container" style="display: none;">
+        <h2 data-lang-key="receivedTitle">🎉 A Surprise For You! 🎉</h2>
+        <p id="personalizedMessage" class="message-text"></p>
+        <div class="heart">💖</div>
+        <p class="message-text" style="font-weight: 500;" data-lang-key="receivedHint">Loved this? You can make someone else smile too!</p>
+    </div>
+
     <div class="container form-container">
-        <h1>✨ Yaari Dosti Ke Naam ✨</h1>
-        <p class="intro">Apne pyaare dost ko yeh dil se likha message bhejo aur unki life mein thodi aur muskurahat bhar do!</p>
+        <h1 data-lang-key="mainTitle">✨ Spark a Friendship Smile ✨</h1>
+        <p class="intro" data-lang-key="mainIntro">Send a heartfelt message to your dear friend and brighten their day!</p>
 
         <div class="input-group">
-            <label for="senderName">Tumhara Nickname / Naam:</label>
-            <input type="text" id="senderName" placeholder="Jaise: Rockstar, Angel...">
+            <label for="senderName" data-lang-key="yourNameLabel">Your Awesome Name:</label>
+            <input type="text" id="senderName" data-lang-placeholder-key="yourNamePlaceholder" placeholder="e.g., Rockstar, Angel...">
         </div>
 
         <div class="input-group">
-            <label for="friendName">Tumhare Best Friend Ka Naam:</label>
-            <input type="text" id="friendName" placeholder="Jaise: Buddy, Partner...">
+            <label for="friendName" data-lang-key="friendNameLabel">Your Best Friend's Name:</label>
+            <input type="text" id="friendName" data-lang-placeholder-key="friendNamePlaceholder" placeholder="e.g., Buddy, Partner...">
         </div>
 
-        <button id="shareButton">💌 Link Banaao Aur Share Karo!</button>
+        <button id="shareButton">
+            <span class="icon">💌</span> <span data-lang-key="shareButtonText">Create & Share Link!</span>
+        </button>
 
-        <p class="footer-note">Yeh Dosti Hum Nahi Todenge! <span class="emoji">🤝</span></p>
+        <p class="footer-note" data-lang-key="footerText">Friendship is a treasure! <span class="emoji">🌟</span></p>
+        <div class="lang-switcher">
+            <span data-lang-key="languageLabel">Language:</span>
+            <button id="langEn" data-lang="en">EN</button>
+            <button id="langHi" data-lang="hi">हि</button>
+        </div>
     </div>
 
     <script>
+        // --- LANGUAGE MANAGEMENT ---
+        const translations = {
+            en: {
+                docTitle: "Friendship Spark ✨",
+                receivedTitle: "🎉 A Surprise For You! 🎉",
+                receivedHint: "Loved this? You can make someone else smile too!",
+                mainTitle: "✨ Spark a Friendship Smile ✨",
+                mainIntro: "Send a heartfelt message to your dear friend and brighten their day!",
+                yourNameLabel: "Your Awesome Name:",
+                yourNamePlaceholder: "e.g., Rockstar, Angel...",
+                friendNameLabel: "Your Best Friend's Name:",
+                friendNamePlaceholder: "e.g., Buddy, Partner...",
+                shareButtonText: "Create & Share Link!",
+                footerText: "Friendship is a treasure! 🌟",
+                alertEnterNames: "Hey buddy! Please enter your name and your friend's name to create the magic link! 😉",
+                alertShareError: "Oops! Couldn't share the link. Maybe you cancelled? 🙁 Try again or copy manually.",
+                alertClipboardSuccess: "Your browser doesn't support direct sharing. 🤔 But no worries, the link and message are copied to your clipboard! Share it manually. 👍",
+                alertClipboardError: "Direct sharing isn't supported & copying failed. 😢 Please copy the link manually:\n\n",
+                shareMessagePrefix: "👋 Hey",
+                shareMessageSuffix: "! Your awesome friend",
+                shareMessageMiddle: "has sent you a heartfelt surprise! 💌 Open the link to see: ",
+                personalizedMessageHey: "Hey",
+                personalizedMessageDearFriend: ", my dear friend!",
+                personalizedMessageContent1: "Guess what? Your buddy",
+                personalizedMessageContent2: "is thinking of you and sending a big virtual hug! 🤗 All those fun times, crazy laughs, and endless chats... they make life so much better. Just wanted to remind you how special you are and how much your friendship means.",
+                personalizedMessageContent3: "Stay amazing, and let's catch up soon! Loads of love! 💖",
+                languageLabel: "Language:",
+                themeToggleText: "Toggle Theme"
+            },
+            hi: {
+                docTitle: " दोस्ती की चमक ✨",
+                receivedTitle: "🎉 आपके लिए एक सरप्राइज! 🎉",
+                receivedHint: "यह पसंद आया? आप भी किसी और को खुश कर सकते हैं!",
+                mainTitle: "✨ दोस्ती की मुस्कान जगाओ ✨",
+                mainIntro: "अपने प्यारे दोस्त को दिल से लिखा यह संदेश भेजें और उनका दिन रोशन करें!",
+                yourNameLabel: "आपका प्यारा नाम:",
+                yourNamePlaceholder: "जैसे: रॉकस्टार, एंजेल...",
+                friendNameLabel: "आपके सबसे अच्छे दोस्त का नाम:",
+                friendNamePlaceholder: "जैसे: बडी, पार्टनर...",
+                shareButtonText: "लिंक बनाएं और शेयर करें!",
+                footerText: "दोस्ती एक खजाना है! 🌟",
+                alertEnterNames: "ऐ दोस्त! कृपया अपना और अपने दोस्त का नाम डालें ताकि जादुई लिंक बन सके! 😉",
+                alertShareError: "ओह! लिंक शेयर नहीं हो सका। शायद आपने रद्द कर दिया? 🙁 फिर से प्रयास करें या मैन्युअल रूप से कॉपी करें।",
+                alertClipboardSuccess: "आपका ब्राउज़र डायरेक्ट शेयरिंग सपोर्ट नहीं करता। 🤔 पर कोई बात नहीं, लिंक और मैसेज क्लिपबोर्ड पर कॉपी हो गए हैं! इसे मैन्युअल रूप से शेयर करें। 👍",
+                alertClipboardError: "डायरेक्ट शेयरिंग समर्थित नहीं है और कॉपी भी विफल रही। 😢 कृपया लिंक मैन्युअल रूप से कॉपी करें:\n\n",
+                shareMessagePrefix: "👋 नमस्ते",
+                shareMessageSuffix: "! आपके प्यारे दोस्त",
+                shareMessageMiddle: "ने आपके लिए दिल से एक सरप्राइज भेजा है! 💌 क्या है, यह देखने के लिए लिंक खोलें: ",
+                personalizedMessageHey: "नमस्ते",
+                personalizedMessageDearFriend: ", मेरे प्यारे दोस्त!",
+                personalizedMessageContent1: "पता है क्या? आपका दोस्त",
+                personalizedMessageContent2: "आपको याद कर रहा है और एक बड़ा वर्चुअल हग भेज रहा है! 🤗 वो सारे मज़ेदार पल, वो पागलपन वाली हँसी, और वो अंतहीन बातें... ये सब ज़िंदगी को कितना बेहतर बनाते हैं। बस तुम्हें याद दिलाना चाहता था कि तुम कितने खास हो और तुम्हारी दोस्ती कितनी मायने रखती है।",
+                personalizedMessageContent3: "हमेशा ऐसे ही रहना, और जल्द ही मिलते हैं! ढेर सारा प्यार! 💖",
+                languageLabel: "भाषा:",
+                themeToggleText: "थीम बदलें"
+            }
+        };
+
+        let currentLang = 'en'; // Default
+
+        function setLanguage(lang) {
+            if (!translations[lang]) lang = 'en'; // Fallback to English
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            document.title = translations[lang].docTitle;
+
+            document.querySelectorAll('[data-lang-key]').forEach(el => {
+                const key = el.getAttribute('data-lang-key');
+                if (translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+            document.querySelectorAll('[data-lang-placeholder-key]').forEach(el => {
+                const key = el.getAttribute('data-lang-placeholder-key');
+                if (translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
+            });
+            // Update active language button
+            document.getElementById('langEn').classList.toggle('active', lang === 'en');
+            document.getElementById('langHi').classList.toggle('active', lang === 'hi');
+        }
+
+        // --- UI ELEMENTS & LOGIC ---
         const receivedMessageDisplay = document.getElementById('receivedMessageDisplay');
         const personalizedMessageElement = document.getElementById('personalizedMessage');
-        
         const senderNameInput = document.getElementById('senderName');
         const friendNameInput = document.getElementById('friendName');
         const shareButton = document.getElementById('shareButton');
+        const floatingEmojisContainer = document.getElementById('floatingEmojisContainer');
+
+        const friendshipEmojis = ['💖', '✨', '🎉', '🎈', '😊', '😂', '👍', '💯', '🌟', '☀️', '🤝', '🤗', '🥳', '🤩'];
+
+        function createFloatingEmoji() {
+            const emojiSpan = document.createElement('span');
+            emojiSpan.classList.add('emoji-float');
+            emojiSpan.textContent = friendshipEmojis[Math.floor(Math.random() * friendshipEmojis.length)];
+            emojiSpan.style.left = Math.random() * 100 + 'vw';
+            emojiSpan.style.fontSize = (Math.random() * 1 + 0.8) + 'rem'; // Size between 0.8rem and 1.8rem
+            emojiSpan.style.animationDuration = (Math.random() * 10 + 15) + 's'; // Duration 15-25s
+            emojiSpan.style.animationDelay = Math.random() * 5 + 's'; // Delay up to 5s
+            floatingEmojisContainer.appendChild(emojiSpan);
+
+            // Remove emoji after animation to prevent too many elements
+            setTimeout(() => {
+                emojiSpan.remove();
+            }, parseFloat(emojiSpan.style.animationDuration) * 1000 + parseFloat(emojiSpan.style.animationDelay) * 1000);
+        }
+
+        // Create initial batch of emojis and then periodically
+        for (let i = 0; i < 15; i++) createFloatingEmoji(); // Initial
+        setInterval(createFloatingEmoji, 2000); // Add one every 2 seconds
+
 
         function getUrlParameter(name) {
             name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -325,69 +391,48 @@
             const results = regex.exec(location.search);
             return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
         }
+        
+        function applyRandomTheme() {
+            const themes = ['theme-cool', 'theme-warm', '']; // Add more or leave empty for default
+            const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+            document.body.className = ''; // Clear existing theme classes
+            if (randomTheme) {
+                document.body.classList.add(randomTheme);
+            }
+        }
 
         window.addEventListener('DOMContentLoaded', () => {
+            // Language detection
+            const userLang = navigator.language || navigator.userLanguage; // "en-US", "hi-IN" etc.
+            if (userLang.startsWith('hi')) {
+                setLanguage('hi');
+            } else {
+                setLanguage('en');
+            }
+            
+            applyRandomTheme(); // Apply a random theme on load
+
             const toName = getUrlParameter('to');
             const fromName = getUrlParameter('from');
+            const langParam = getUrlParameter('lang'); // Check if lang is in URL
+
+            if (langParam && translations[langParam]) { // If lang in URL, override browser lang
+                setLanguage(langParam);
+            }
+
 
             if (toName && fromName) {
-                personalizedMessageElement.innerHTML = `Hey <strong>${toName}</strong>, mere jigri yaar! <br><br> Main, tumhara apna <strong>${fromName}</strong>, bas tumhe yeh batana chahta/chahti hoon ki tumhari dosti kitni anmol hai. Woh saari masti, woh secrets, woh support... sab kuch life ko awesome banata hai! Tumhe bahut miss kar raha/rahi hoon. <br><br>Hamesha aise hi rehna, aur jaldi milte hain! Cheers to our friendship! 🥳`;
+                const T = translations[currentLang];
+                personalizedMessageElement.innerHTML = `
+                    ${T.personalizedMessageHey} <strong>${toName}</strong>${T.personalizedMessageDearFriend}<br><br>
+                    ${T.personalizedMessageContent1} <strong>${fromName}</strong> ${T.personalizedMessageContent2}<br><br>
+                    ${T.personalizedMessageContent3}`;
                 receivedMessageDisplay.style.display = 'block';
-                // Scroll to received message, but make sure it's visible if already at top
-                const receivedMsgTop = receivedMessageDisplay.getBoundingClientRect().top + window.pageYOffset - 80; // 80px offset from top
+                const receivedMsgTop = receivedMessageDisplay.getBoundingClientRect().top + window.pageYOffset - 60;
                 window.scrollTo({ top: receivedMsgTop, behavior: 'smooth' });
             }
+            // Form is always visible
         });
 
-        shareButton.addEventListener('click', async () => {
-            const senderName = senderNameInput.value.trim();
-            const friendName = friendNameInput.value.trim();
-
-            if (!senderName || !friendName) {
-                alert('Ae Dost! Apna aur apne buddy ka naam toh likh de, tabhi toh jaadu chalega! ✨');
-                return;
-            }
-
-            const baseUrl = window.location.origin + window.location.pathname;
-            const shareUrl = `${baseUrl}?to=${encodeURIComponent(friendName)}&from=${encodeURIComponent(senderName)}`;
-
-            const shareText = `👋 Hey ${friendName}! Tumhare liye ${senderName} ne ek dil se paigaam bheja hai! 💌 Miss kar rahe hain woh tumhe! Jaldi se link open karke dekho:`;
-
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: `🎁 ${senderName} ka ek special message ${friendName} ke liye! 🎁`,
-                        text: shareText,
-                        url: shareUrl
-                    });
-                } catch (error) {
-                    console.error('Error sharing:', error);
-                    if (error.name !== 'AbortError') {
-                        alert('Oops! Link share nahi ho paya. Try again ya manually copy karo. 😕');
-                    }
-                }
-            } else {
-                try {
-                    await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
-                    alert('Aapka browser direct sharing support nahi karta. 🥺\nPar chinta mat karo! Link aur message clipboard par copy ho gaya hai! Ab ise manually share kar do. 🎉');
-                } catch (err) {
-                    console.error('Failed to copy: ', err);
-                    alert('Browser direct sharing support nahi karta aur copy bhi nahi ho paya. 😢 Aap link manually copy kar lein:\n\n' + shareUrl);
-                }
-            }
-        });
-
-        // Add emojis to elements dynamically (more flexible than CSS content)
-        // This is optional, as CSS content is already doing it. But if you want more control or complex logic:
-        /*
-        const friendshipSymbols = ['💖', '⭐', '😊', '✨', '🤝', '🎉', '🎈', '🎶', '☀️', '😂', '👍', '💯'];
-        document.querySelectorAll('.friendship-elements .element').forEach((el, index) => {
-            el.textContent = friendshipSymbols[index % friendshipSymbols.length];
-            // You can also randomize font size here
-            // el.style.fontSize = (Math.random() * 1.5 + 1) + 'rem'; // Random size between 1rem and 2.5rem
-        });
-        */
-    </script>
-
-</body>
-</html>
+        document.getElementById('langEn').addEventListener('click', () => setLanguage('en'));
+        document.getElementById('langHi').
