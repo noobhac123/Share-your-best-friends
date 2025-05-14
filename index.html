@@ -194,7 +194,7 @@
         }
 
         .footer-note {
-            margin-top: 20px;
+            margin-top: 30px; /* Increased margin if fallback options are visible */
             font-size: 0.95em;
             color: rgba(0,0,0, 0.6);
             font-weight: 500;
@@ -224,6 +224,69 @@
             margin: 40px 15%;
         }
 
+        /* Fallback Share Options Styling */
+        #fallbackShareOptions {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: var(--bg-color-dark);
+            border-radius: var(--border-radius);
+            border: 1px solid #eee;
+        }
+        #fallbackShareOptions p.fallback-title {
+            margin-bottom: 15px;
+            font-weight: 500;
+            color: var(--text-color);
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        #copyLinkFallback {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: var(--border-radius);
+            font-size: 1em;
+            font-family: var(--font-headings);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: auto;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.25);
+        }
+        #copyLinkFallback:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.35);
+        }
+        .social-share-buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+        .social-share-btn {
+            display: inline-flex; /* For aligning icon and text if any */
+            align-items: center;
+            justify-content: center;
+            padding: 10px 18px;
+            border-radius: var(--border-radius);
+            color: white !important; /* Ensure text is white */
+            text-decoration: none;
+            font-family: var(--font-primary);
+            font-weight: 500;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-size: 0.9em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .social-share-btn:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .whatsapp-btn { background-color: #25D366; }
+        .telegram-btn { background-color: #0088cc; }
+        .facebook-btn { background-color: #1877F2; }
+
+
         /* Responsive adjustments */
         @media (max-width: 600px) {
             h1 { font-size: 2.2em; }
@@ -233,13 +296,14 @@
             input[type="text"], button#shareButton { font-size: 1em; }
             p.intro, p.message-text { font-size: 1em; }
             button#shareButton { padding: 14px 25px; }
+            .social-share-btn { padding: 9px 15px; font-size: 0.85em; }
+            #copyLinkFallback {padding: 10px 20px; font-size: 0.95em;}
         }
     </style>
 </head>
 <body>
-    <div id="background-animation"></div> <!-- Placeholder for more complex JS animations if needed -->
+    <div id="background-animation"></div>
 
-    <!-- This container will ONLY show if a message was received via URL parameters -->
     <div id="receivedMessageDisplay" class="container received-message-container" style="display: none;">
         <h2>💌 Tumhare Liye Paigaam! 💌</h2>
         <p id="personalizedMessage" class="message-text"></p>
@@ -247,7 +311,6 @@
         <p class="message-text" style="font-weight: 500;">Yeh padh kar achha laga na? Ab tum bhi apne doston ko aise hi yaad dila sakte ho!</p>
     </div>
 
-    <!-- This container is ALWAYS visible for creating a new message -->
     <div class="container form-container">
         <h1>✨ Yaari Ke Lamhe ✨</h1>
         <p class="intro">Apne jigri dost ko yeh pyaara sa message bhejo aur unka din bana do!</p>
@@ -264,6 +327,22 @@
 
         <button id="shareButton">🔗 Link Banaao aur Bhejo!</button>
 
+        <!-- Fallback Share Options - Initially Hidden -->
+        <div id="fallbackShareOptions" style="display: none;">
+            <p class="fallback-title">
+                Browser mein direct sharing support nahi hai. Koi baat nahi! Aap yahaan se share kar sakte hain ya link copy kar ke manually bhej sakte hain.
+            </p>
+            <div style="margin-bottom: 15px;">
+                <button id="copyLinkFallback">📋 Link Copy Karein</button>
+            </div>
+            <div class="social-share-buttons-container">
+                <a href="#" id="shareViaWhatsApp" target="_blank" class="social-share-btn whatsapp-btn">WhatsApp</a>
+                <a href="#" id="shareViaTelegram" target="_blank" class="social-share-btn telegram-btn">Telegram</a>
+                <a href="#" id="shareViaFacebook" target="_blank" class="social-share-btn facebook-btn">Facebook</a>
+            </div>
+        </div>
+        <!-- End of Fallback Share Options -->
+
         <p class="footer-note">Dosti ka rishta, sabse anmol! <span class="emoji">🌟</span></p>
     </div>
 
@@ -274,6 +353,15 @@
         const senderNameInput = document.getElementById('senderName');
         const friendNameInput = document.getElementById('friendName');
         const shareButton = document.getElementById('shareButton');
+
+        // Fallback share elements
+        const fallbackShareOptionsDiv = document.getElementById('fallbackShareOptions');
+        const fallbackTitleP = fallbackShareOptionsDiv.querySelector('p.fallback-title');
+        const copyLinkFallbackButton = document.getElementById('copyLinkFallback');
+        const shareViaWhatsAppLink = document.getElementById('shareViaWhatsApp');
+        const shareViaTelegramLink = document.getElementById('shareViaTelegram');
+        const shareViaFacebookLink = document.getElementById('shareViaFacebook');
+
 
         function getUrlParameter(name) {
             name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -304,8 +392,8 @@
 
             const baseUrl = window.location.origin + window.location.pathname;
             const shareUrl = `${baseUrl}?to=${encodeURIComponent(friendName)}&from=${encodeURIComponent(senderName)}`;
-
             const shareText = `👋 Hey ${friendName}! Tumhare liye ${senderName} ki taraf se ek surprise message hai! 🎁 Jaldi se link open karke dekho kya hai:`;
+            const fullShareTextForClipboard = `${shareText}\n${shareUrl}`;
 
             if (navigator.share) {
                 try {
@@ -314,26 +402,63 @@
                         text: shareText,
                         url: shareUrl
                     });
-                    // Optional: Show a success toast/notification
-                    // senderNameInput.value = '';
-                    // friendNameInput.value = '';
+                    // Optional: Hide fallback options if they were visible from a previous attempt
+                    fallbackShareOptionsDiv.style.display = 'none';
                 } catch (error) {
                     console.error('Error sharing:', error);
                     if (error.name !== 'AbortError') {
-                        alert('Oops! Link share nahi ho paya. Shayad tumne cancel kar diya. 🙁');
+                        // If navigator.share exists but fails for some other reason, show fallback
+                        showFallbackOptions(shareText, shareUrl, fullShareTextForClipboard, 'Oops! Link share nahi ho paya. Shayad tumne cancel kar diya ya koi error aa gaya. 🙁 Neeche diye gaye options try karo.');
+                    } else {
+                         // User aborted the share. Optionally hide fallback or do nothing.
+                         fallbackShareOptionsDiv.style.display = 'none';
                     }
                 }
             } else {
-                try {
-                    await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
-                    alert('Tumhara browser direct sharing support nahi karta. 🤔\nKoi baat nahi, link aur message clipboard par copy ho gaya hai! Ab ise manually share kar do. 👍');
-                } catch (err) {
-                    console.error('Failed to copy: ', err);
-                    alert('Browser direct sharing support nahi karta aur copy bhi nahi ho paya. 😢 Aap link manually copy kar lein:\n\n' + shareUrl);
-                }
+                // navigator.share is not supported, show fallback options
+                showFallbackOptions(shareText, shareUrl, fullShareTextForClipboard);
             }
         });
-    </script>
 
-</body>
-</html>
+        async function showFallbackOptions(shareText, shareUrl, fullShareTextForClipboard, customInitialMessage) {
+            let alertMessage = customInitialMessage || 'Tumhara browser direct sharing support nahi karta. 🤔\n';
+            let copiedSuccess = false;
+
+            try {
+                await navigator.clipboard.writeText(fullShareTextForClipboard);
+                alertMessage += (customInitialMessage ? '\n' : '') + 'Link aur message clipboard par copy ho gaya hai! Ab ise manually share kar do ya neeche diye gaye options istemal karo. 👍';
+                copyLinkFallbackButton.textContent = '📋 Link Copied! (Copy Again)';
+                copiedSuccess = true;
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                alertMessage += (customInitialMessage ? '\n' : '') + 'Clipboard par copy karne mein dikkat hui. 😢 Kripya neeche diye gaye options istemal karein ya link ko manually copy karein.';
+                copyLinkFallbackButton.textContent = '📋 Link Copy Karein (Manual)';
+            }
+            
+            alert(alertMessage);
+
+            if (!copiedSuccess) {
+                fallbackTitleP.innerHTML = `Direct sharing support nahi hai, aur clipboard par copy karne mein bhi dikkat hui. 😢<br>
+                                Kripya neeche diye gaye options istemal karein ya link ko manually select karke copy karein:<br>
+                                <strong style="display:block; margin-top:5px; word-break: break-all;">Link:</strong> ${shareUrl}<br>
+                                <strong style="display:block; margin-top:5px;">Message:</strong> ${shareText}`;
+            } else {
+                 fallbackTitleP.innerHTML = `Browser mein direct sharing support nahi hai. Koi baat nahi! Aap yahaan se share kar sakte hain ya link copy kar ke manually bhej sakte hain. Link aur message copy ho chuka hai.`;
+            }
+
+            copyLinkFallbackButton.onclick = async () => {
+                try {
+                    await navigator.clipboard.writeText(fullShareTextForClipboard);
+                    alert('Link aur message clipboard par copy ho gaya hai! 👍');
+                    copyLinkFallbackButton.textContent = '📋 Link Copied!';
+                } catch (err) {
+                    alert('Copy nahi ho paya. 😢 Kripya manually copy karein.\nLink: ' + shareUrl);
+                }
+            };
+
+            shareViaWhatsAppLink.href = `https://wa.me/?text=${encodeURIComponent(fullShareTextForClipboard)}`;
+            shareViaTelegramLink.href = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
+            shareViaFacebookLink.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}"e=${encodeURIComponent(shareText)}`;
+
+            fallbackShareOptionsDiv.style.display = 'block';
+            fallbackShareOptionsDiv.s
