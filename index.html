@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miss You, Dost!</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); /* Softer gradient */
+            color: #444; /* Slightly softer text color */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.97); /* Slightly more opaque */
+            padding: 35px 30px; /* Increased padding */
+            border-radius: 20px; /* More rounded */
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15); /* Softer, larger shadow */
+            max-width: 550px;
+            width: 90%;
+            animation: fadeInScale 0.7s ease-out forwards;
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        h1 {
+            font-family: 'Baloo Bhai 2', cursive; /* Adding a more playful font, ensure it's available or use a fallback */
+            /* You might need to import Baloo Bhai 2 from Google Fonts if you want to use it:
+               <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@500;700&display=swap" rel="stylesheet"> */
+            color: #e91e63; /* Pinkish color */
+            margin-bottom: 20px;
+            font-size: 2.5em; /* Larger heading */
+            font-weight: 700;
+        }
+
+        p.intro {
+            font-size: 1.15em;
+            color: #555;
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600; /* Slightly bolder */
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 1.05em;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 18px; /* More padding */
+            border: 1px solid #ddd;
+            border-radius: 10px; /* More rounded */
+            font-size: 1.05em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: #fcfcfc;
+        }
+
+        input[type="text"]:focus {
+            border-color: #e91e63;
+            box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.2);
+            outline: none;
+        }
+
+        #messagePreview {
+            background-color: #fff0f5; /* Lavender blush - very light pink */
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            color: #5c3c47; /* Darker pinkish brown for text */
+            line-height: 1.7;
+            min-height: 120px;
+            border-left: 6px solid #e91e63;
+            text-align: left;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        #messagePreview strong {
+            color: #c2185b; /* Darker pink for emphasis */
+            font-weight: 600;
+        }
+
+        button#shareButton {
+            background: linear-gradient(to right, #ff758c, #ff7eb3); /* Pink gradient */
+            color: white;
+            border: none;
+            padding: 16px 35px; /* Larger button */
+            border-radius: 10px;
+            font-size: 1.15em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button#shareButton:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(233, 30, 99, 0.3);
+            background: linear-gradient(to right, #ff6b81, #ff73ae); /* Slightly darker on hover */
+        }
+
+        button#shareButton:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(233, 30, 99, 0.2);
+        }
+
+        .footer-note {
+            margin-top: 35px;
+            font-size: 0.9em;
+            color: rgba(0,0,0, 0.6); /* Darker footer text for contrast with light background */
+        }
+
+        /* Optional: Add Google Font for Baloo Bhai 2 at the top of style or in <head> */
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@500;700&display=swap');
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2em;
+            }
+            .container {
+                padding: 25px 20px;
+            }
+            input[type="text"], button#shareButton {
+                font-size: 1em;
+                padding: 12px 15px;
+            }
+            #messagePreview {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>👬 Yaaron Ki Yaad! 👭</h1>
+        <p class="intro">Apne khaas dost ko yeh special message bhejo aur batao ki tum unhe kitna miss kar rahe ho.</p>
+
+        <div class="input-group">
+            <label for="friendName">Dost Ka Naam Yahan Likho:</label>
+            <input type="text" id="friendName" placeholder="Jaise: Rahul, Priya...">
+        </div>
+
+        <p class="intro" style="margin-bottom: 15px; font-size: 1em;">Aisa dikhega message (preview):</p>
+        <div id="messagePreview">
+            Hey <strong>Dost</strong>, tumhari bahut yaad aa rahi hai! 😔 Woh puraane din, hamari baatein aur saari masti... sab kuch bahut miss kar raha/rahi hoon. Socha tumhe yaad dila doon ki tum kitne special ho. Jaldi milte hain! 🤗
+        </div>
+
+        <button id="shareButton">💌 Message Share Karo</button>
+
+        <p class="footer-note">Dosti ke liye banaya gaya! ❤️</p>
+    </div>
+
+    <script>
+        const friendNameInput = document.getElementById('friendName');
+        const messagePreview = document.getElementById('messagePreview');
+        const shareButton = document.getElementById('shareButton');
+
+        // Yeh HTML formatting ke saath PREVIEW ke liye message hai
+        const baseMessagePreviewTemplate = (name) => `Hey <strong>${name}</strong>, tumhari bahut yaad aa rahi hai! 😔 Woh puraane din, hamari baatein aur saari masti... sab kuch bahut miss kar raha/rahi hoon. Socha tumhe yaad dila doon ki tum kitne special ho. Jaldi milte hain! 🤗`;
+        
+        // Yeh PLAIN TEXT message hai joअसल में SHARE kiya jayega
+        const actualMessageToShareTemplate = (name) => `Hey ${name}, tumhari bahut yaad aa rahi hai! 😔 Woh puraane din, hamari baatein aur saari masti... sab kuch bahut miss kar raha/rahi hoon. Socha tumhe yaad dila doon ki tum kitne special ho. Jaldi milte hain! 🤗`;
+
+        function updateMessagePreview() {
+            const name = friendNameInput.value.trim() || "Pyaare Dost"; // Default naam agar input khaali ho
+            messagePreview.innerHTML = baseMessagePreviewTemplate(name);
+        }
+
+        // Initial preview update
+        updateMessagePreview();
+
+        // Update preview on input
+        friendNameInput.addEventListener('input', updateMessagePreview);
+
+        shareButton.addEventListener('click', async () => {
+            const name = friendNameInput.value.trim() || "Pyaare Dost"; // Yahan bhi same default
+            
+            // YEH MESSAGE SHARE HOGA, ismein naam dynamically aa jayega
+            const messageTextForSharing = actualMessageToShareTemplate(name);
+            
+            const pageTitle = `Ek Khaas Paigaam ${name} Ke Liye!`; // Title jo share dialog mein dikh sakta hai
+
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: pageTitle, // Ye title kuch apps mein share karte waqt dikhta hai
+                        text: messageTextForSharing, // YEH ASAL MESSAGE HAI JO SHARE HOGA
+                        // url: window.location.href // Agar aap is page ka link bhi share karna chahte hain (optional)
+                    });
+                    console.log('Message shared successfully!');
+                    // Aap yahan ek success message dikha sakte hain, jaise ek chhota sa temporary popup
+                } catch (error) {
+                    console.error('Error sharing:', error);
+                    // Agar user ne share cancel kiya toh bhi error aa sakta hai (AbortError), use ignore kar sakte hain
+                    if (error.name !== 'AbortError') {
+                        alert('Oops! Message share nahi ho paya. Shayad aapne sharing cancel kar di ya koi error aa gaya.');
+                    }
+                }
+            } else {
+                // Fallback agar Web Share API support nahi karta
+                alert('Aapka browser direct sharing support nahi karta. Aap message copy karke manually share kar sakte hain:\n\n' + messageTextForSharing);
+                // Optionally, copy to clipboard
+                try {
+                    await navigator.clipboard.writeText(messageTextForSharing);
+                    alert('Message clipboard par copy ho gaya hai! Ab aap ise kahin bhi paste karke share kar sakte hain.');
+                } catch (err) {
+                    console.error('Failed to copy message to clipboard: ', err);
+                    // Agar copy bhi fail ho, toh user ko manually select karke copy karne ko bol sakte hain.
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
